@@ -37,7 +37,6 @@ namespace EventMaker.Persistency
 
         private static async Task<string> DeSerializeEventsFileAsync(string fileName)
         {
-
             // Hent fil
             string jsonData = File.ReadAllText(ApplicationData.Current.RoamingFolder.Path + "/" + fileName);
             return JsonConvert.DeserializeObject<ObservableCollection<Event>>(jsonData);
