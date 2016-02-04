@@ -13,39 +13,26 @@ namespace EventMaker.Persistency
 {
     class PersistencyService
     {
-        private static string _eventFileName = "default_filename.json";
+        private static string _fileName;
 
-        public static string eventFileName
+        public static string FileName
         {
-            get { return _eventFileName; }
-            set { _eventFileName = value; }
+            get { return _fileName; }
+            set { _fileName = value; }
         }
 
-
-        private static async void SerializeEventsFileAsync(string eventString, string filename)
+        public static async void Save(ObservableCollection<Event> data)
         {
-            // SAve til fil
-            File.WriteAllText(ApplicationData.Current.RoamingFolder.Path + "/" +filename,eventString);
-        }
-
-        public static async void SaveEventAsJsonAsync(ObservableCollection<Event> data)
-        {
-            // Seraialse til json 
             string json = JsonConvert.SerializeObject(data);
-            SerializeEventsFileAsync(json, eventFileName);
+            StorageFile localFile = await ApplicationData.Current.LocalFolder.CreateFileAsync(json, CreationCollisionOption.ReplaceExisting);
         }
 
-        private static async Task<string> DeSerializeEventsFileAsync(string fileName)
+        public static async Task<ObservableCollection<Event>> Load()
         {
-            // Hent fil
-            string jsonData = File.ReadAllText(ApplicationData.Current.RoamingFolder.Path + "/" + fileName);
-            return JsonConvert.DeserializeObject<ObservableCollection<Event>>(jsonData);
-        }
-
-        public static async Task<List<Event>> LoadEventsFromJsonAsync()
-        {
-            // Do stuff
-
+            StorageFile localFile = await ApplicationData.Current.LocalFolder.GetFileAsync(FileName);
+            string jsonFile = await FileIO.ReadTextAsync(localFile);
+            return JsonConvert.DeserializeObject<ObservableCollection<Event>>(jsonFile);
         }
     }
 }
+

@@ -23,6 +23,8 @@ namespace EventMaker.Model
 
         public string Place { get; set; }
 
+
+
         public override string ToString()
         {
             return $"DateTime: {DateTime}, Id: {Id}, Description: {Description}, Name: {Name}, Place: {Place}";

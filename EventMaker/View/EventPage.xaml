@@ -1,13 +1,34 @@
 ﻿<Page
-    x:Class="EventMaker.View.EventPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:EventMaker.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ViewModel="using:EventMaker.ViewModel"
+    x:Class="EventMaker.View.EventPage"
     mc:Ignorable="d">
+    <Page.Resources>
+        <DataTemplate x:Key="DataTemplate1">
+            <Grid d:DesignWidth="80" d:DesignHeight="76.333">
+                <StackPanel d:LayoutOverrides="TopPosition, BottomPosition">
+                    <TextBlock x:Name="textBlock" Style="{StaticResource HeaderTextBlockStyle}" TextWrapping="Wrap" Text="{Binding Name}" Foreground="#FF3D7025"/>
+                    <TextBlock x:Name="textBlock1" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="Wrap" Text="{Binding Place}" Foreground="Black"/>
+                    <TextBlock x:Name="textBlock2" TextWrapping="Wrap" Text="{Binding Description}" Foreground="Black"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Page.DataContext>
+        <ViewModel:EventVM/>
+    </Page.DataContext>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+        <ListView x:Name="listView" Margin="20,170,20,20" ItemsSource="{Binding CatalogSingleton.ObservableCollection}" ItemTemplate="{StaticResource DataTemplate1}"/>
+        <Grid Height="160" Margin="0,10,20,0" VerticalAlignment="Top" d:LayoutOverrides="LeftPosition, RightPosition">
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Events" FontSize="64" Margin="115,25,0,49" d:LayoutOverrides="Height, TopPosition, BottomPosition"/>
+            <Button x:Name="button" Content="Create Event" HorizontalAlignment="Right" Margin="0,65,61,55" VerticalAlignment="Stretch" Background="#FF29B7EA" BorderBrush="#FF441111" FontSize="21.333" Height="40" Click="button_Click"/>
+        </Grid>
     </Grid>
 </Page>

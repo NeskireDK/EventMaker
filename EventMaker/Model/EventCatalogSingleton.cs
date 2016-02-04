@@ -5,17 +5,19 @@ namespace EventMaker.Model
 {
     public class EventCatalogSingleton
     {
-        private EventCatalogSingleton _instance;
+        private static EventCatalogSingleton _instance;
         private ObservableCollection<Event> _observableCollection;
 
         public EventCatalogSingleton()
         {
+            Events = new ObservableCollection<Event>();
             Add(new Event(DateTime.Now, 1, "Beskrivelse", "Navn", "Sted"));
+            Add(new Event(DateTime.Now, 2, "Beskrivelse 2", "Navn 2", "Sted 2"));
         }
 
 
 
-        public EventCatalogSingleton Instance
+        public static EventCatalogSingleton Instance
         {
             get {
                 if (_instance == null)
@@ -26,7 +28,7 @@ namespace EventMaker.Model
             }
         }
 
-        public ObservableCollection<Event> ObservableCollection
+        public ObservableCollection<Event> Events
         {
             get { return _observableCollection; }
             set { _observableCollection = value; }
@@ -34,16 +36,23 @@ namespace EventMaker.Model
 
         public void Add(Event newEvent)
         {
-            ObservableCollection.Add(newEvent);
+            Events.Add(newEvent);
+            Persistency.PersistencyService.Save(Events);
         }
 
-        public void LoadEventsAsync()
+        public void Add(int id, string name, string place, DateTime dateTime, string description)
         {
-            // DO SOMETHING
+            Events.Add(new Event(dateTime, id, description, name, place));
+            Persistency.PersistencyService.Save(Events);
+        }
+
+        public async void LoadEventsAsync()
+        {
+            Events = await Persistency.PersistencyService.Load();
         }
         public void Remove(Event eventToBeRemoved)
         {
-            ObservableCollection.Remove(eventToBeRemoved);
+            Events.Remove(eventToBeRemoved);
         }
 
 

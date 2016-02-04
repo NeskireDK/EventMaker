@@ -8,13 +8,21 @@ namespace EventCatalogSingletonTest
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestSize()
+        {
+            EventCatalogSingleton EventTest = new EventCatalogSingleton();
+            Assert.AreEqual(2, EventTest.Events.Count);
+        }
+
+        [TestMethod]
+        public void TestAdd()
         {
             EventCatalogSingleton EventTest = new EventCatalogSingleton();
             Event Eventet = new Event(DateTime.Now, 1, "Beskrivelse", "Navn", "Sted");
             EventTest.Add(Eventet);
 
-            Assert.AreEqual(true, EventTest.ObservableCollection.Contains(Eventet));
+            Assert.AreEqual(true, EventTest.Events.Contains(Eventet));
         }
+
     }
 }
